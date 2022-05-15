@@ -39,30 +39,34 @@ def subformulas(formula):
 
 #  we have shown in class that, for all formula A, len(subformulas(A)) <= length(A).
 
-
 def atoms(formula):
-    """Returns the set of all atoms occurring in a formula.
-
-    For example, observe the piece of code below.
-
-    my_formula = Implies(Atom('p'), Or(Atom('p'), Atom('s')))
-    for atom in atoms(my_formula):
-        print(atom)
-
-    This piece of code above prints: p, s
-    (Note that there is no repetition of p)
-    """
-    pass  # ======== REMOVE THIS LINE AND INSERT YOUR CODE HERE ========
-
+    """Returns the set of all atoms occurring in a formula."""
+    if isinstance(formula, Atom):
+        return {formula}
+    if isinstance(formula, Not):
+        return atoms(formula.inner)
+    if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
+        return atoms(formula.left).union(atoms(formula.right))
+        
 
 def number_of_atoms(formula):
-    """Returns the number of atoms occurring in a formula.
-    For instance,
-    number_of_atoms(Implies(Atom('q'), And(Atom('p'), Atom('q'))))
+    """Returns the number of atoms occurring in a formula."""
+    if isinstance(formula, Atom):
+        return 1
+    if isinstance(formula, Not):
+        return number_of_atoms(formula.inner)
+    if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
+        return number_of_atoms(formula.left) + (number_of_atoms(formula.right))
 
-    must return 3 (Observe that this function counts the repetitions of atoms)
-    """
-    pass  # ======== REMOVE THIS LINE AND INSERT YOUR CODE HERE ========
+
+def number_of_connectives(formula):
+    """Returns the number of connectives occurring in a formula."""
+    if isinstance(formula, Atom):
+        return 0
+    if isinstance(formula, Not):
+        return number_of_connectives(formula.inner) + 1
+    if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
+        return number_of_connectives(formula.left) + number_of_connectives(formula.right) + 1
 
 
 def number_of_connectives(formula):
@@ -89,7 +93,24 @@ def is_clause(formula):
 def is_negation_normal_form(formula):
     """Returns True if formula is in negation normal form.
     Returns False, otherwise."""
-    pass  # ======== REMOVE THIS LINE AND INSERT YOUR CODE HERE ========
+
+    """ Preciso verificar se a negação só é aplicada apenas nas atómicas e os únicos outros operadores booleanos permitidos são a conjunção ( E ) e disjunção ( OU )."""
+            
+    if isinstance(formula, Atom):
+        return True
+    if isinstance(formula, Not):
+        if isinstance(formula.inner, Atom):
+            return True
+        else:
+            return False
+    if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
+        if isinstance(formula, Implies):
+            return False
+        else:
+            if is_negation_normal_form(formula.left) == True and is_negation_normal_form(formula.right) == True:
+                return True
+            else:
+                return False
 
 
 def is_cnf(formula):
