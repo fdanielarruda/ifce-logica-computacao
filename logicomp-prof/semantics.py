@@ -1,6 +1,7 @@
 """The goal in this module is to define functions associated with the semantics of formulas in propositional logic. """
 
 
+from numpy import True_
 from formula import *
 from functions import atoms
 
@@ -9,7 +10,30 @@ def truth_value(formula, interpretation):
     """Determines the truth value of a formula in an interpretation (valuation).
     An interpretation may be defined as dictionary. For example, {'p': True, 'q': False}.
     """
-    pass
+    
+    if isinstance(formula, Atom): # determina se a formula é um atomo e se for retorna V
+        return True
+    if isinstance(formula, Not): # determina se a formula é uma negação e se for, retorna F
+        return False
+    if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
+        truth_left = truth_value(formula.left, {}) # retorna o valor do lado esquerdo da formula
+        truth_right = truth_value(formula.right, {}) # retorna o valor do lado direito da formula
+
+        if isinstance(formula, Implies): # retorna o resultado da valoração do implica
+            if truth_left == True and truth_right == False:
+                return False
+            else: 
+                return True
+        if isinstance(formula, And): # retorna o resultado da valoração do and
+            if truth_left == True and truth_right == True:
+                return True
+            else: 
+                return False
+        if isinstance(formula, Or): # retorna o resultado da valoração do or
+            if truth_left == False and truth_right == False:
+                return False
+            else: 
+                return True
     # ======== YOUR CODE HERE ========
 
 
@@ -38,4 +62,29 @@ def satisfiability_brute_force(formula):
     pass
     # ======== YOUR CODE HERE ========
 
+def satisfiability_checking(formula):
+    """  """
+    list_atoms = atoms(formula)
+    interpretation = {}
+    return sat(formula, list_atoms, interpretation)
+    # ======== YOUR CODE HERE ========
+    
+def sat(formula, atoms, interpretation):
+    
+    if atoms == {}:
+        if truth_value(formula, interpretation):
+            return interpretation
+        else:
+            return False
+
+    atom = atoms.pop()
+    interpretation1 = interpretation.union(atom, True)
+    interpretation2 = interpretation.union(atom, False)
+
+    result = sat(formula, atoms, interpretation1)
+
+    if result != False:
+        return interpretation1
+
+    return sat(formula, atoms, interpretation2)
 
