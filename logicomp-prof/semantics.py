@@ -11,29 +11,24 @@ def truth_value(formula, interpretation):
     An interpretation may be defined as dictionary. For example, {'p': True, 'q': False}.
     """
     
-    if isinstance(formula, Atom): # determina se a formula é um atomo e se for retorna V
-        return True
-    if isinstance(formula, Not): # determina se a formula é uma negação e se for, retorna F
-        return False
-    if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
-        truth_left = truth_value(formula.left, {}) # retorna o valor do lado esquerdo da formula
-        truth_right = truth_value(formula.right, {}) # retorna o valor do lado direito da formula
+    if isinstance(formula, Atom): # determina se a formula é um atomo e se for retorna a interpretation
+        atomsInterpretation = interpretation.keys()
+        for atomI in atomsInterpretation:
+            if str(atomI) == str(formula):
+                return interpretation[str(atomI)]
 
-        if isinstance(formula, Implies): # retorna o resultado da valoração do implica
-            if truth_left == True and truth_right == False:
-                return False
-            else: 
-                return True
-        if isinstance(formula, And): # retorna o resultado da valoração do and
-            if truth_left == True and truth_right == True:
-                return True
-            else: 
-                return False
+    if isinstance(formula, Not): # determina se a formula é uma negação e se for, retorna F
+        return not truth_value(formula.inner, interpretation)
+
+    if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
+
+        if isinstance(formula, Implies):
+            return not ( truth_value(formula.left, interpretation) and not truth_value(formula.right, interpretation) )
+        if isinstance(formula, And): # retorna o resultado da valoração do
+            return truth_value(formula.left, interpretation) and truth_value(formula.right, interpretation)
         if isinstance(formula, Or): # retorna o resultado da valoração do or
-            if truth_left == False and truth_right == False:
-                return False
-            else: 
-                return True
+            return truth_value(formula.left, interpretation) or truth_value(formula.right, interpretation)
+
     # ======== YOUR CODE HERE ========
 
 
