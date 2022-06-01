@@ -5,10 +5,18 @@ from semantics import *
 
 # Aqui ficará o executável do projeto
 
+# atomP = Atom('p')
+# atomQ = Atom('q')
+
+# formula = (Not(atomP))
+# interpretation = {'p': False, 'q': False}
+
+# print(truth_value(formula, interpretation))
+
 atomP = Atom('p')
 atomQ = Atom('q')
 
-formula = (Not(atomP))
-interpretation = {'p': False, 'q': False}
+formula = Or(atomP, atomQ)
+# interpretation = {'p': False, 'q': False}
 
-print(truth_value(formula, interpretation))
+print(satisfiability_brute_force(formula))

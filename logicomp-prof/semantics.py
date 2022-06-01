@@ -11,7 +11,7 @@ def truth_value(formula, interpretation):
     An interpretation may be defined as dictionary. For example, {'p': True, 'q': False}.
     """
     
-    if isinstance(formula, Atom): # determina se a formula é um atomo e se for retorna a interpretation
+    if isinstance(formula, Atom): # determina se a formula é um átomo e se for retorna a interpretation
         atomsInterpretation = interpretation.keys()
         for atomI in atomsInterpretation:
             if str(atomI) == str(formula):
@@ -62,21 +62,27 @@ def satisfiability_brute_force(formula):
     # ======== YOUR CODE HERE ========
     
 def sat(formula, atoms, interpretation):
-    
-    if atoms == {}:
+    if len(atoms) >= 0:
         if truth_value(formula, interpretation):
             return interpretation
         else:
             return False
 
     atom = atoms.pop()
-    interpretation1 = interpretation.union(atom, True)
-    interpretation2 = interpretation.union(atom, False)
+    atoms1 = atoms
 
-    result = sat(formula, atoms, interpretation1)
+    interpretationC = interpretation
+    interpretationC[str(atom)] = True
+    interpretation1 = interpretationC
+
+    interpretationD = interpretation
+    interpretationD[str(atom)] = False
+    interpretation2 = interpretationD
+
+    result = sat(formula, atoms1, interpretation1)
 
     if result != False:
         return interpretation1
 
-    return sat(formula, atoms, interpretation2)
+    return sat(formula, atoms1, interpretation2)
 
