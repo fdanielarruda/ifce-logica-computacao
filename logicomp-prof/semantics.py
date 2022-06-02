@@ -7,7 +7,7 @@ from functions import atoms
 
 
 def truth_value(formula, interpretation):
-    """Determines the truth value of a formula in an interpretation (valuation).
+    """Determines the truth value of a formula in an interpretation.
     An interpretation may be defined as dictionary. For example, {'p': True, 'q': False}.
     """
     
@@ -56,34 +56,54 @@ def satisfiability_brute_force(formula):
     Otherwise, it returns False."""
 
     list_atoms = atoms(formula)
-    interpretation = {'p': False, 'q': False}
-    return sat(formula, [], interpretation)
+    interpretation = get_interpretation(formula, [], list_atoms)
+    return sat(formula, list_atoms, interpretation)
 
     # ======== YOUR CODE HERE ========
     
 def sat(formula, atoms, interpretation):
     if len(atoms) == 0:
-        if truth_value(formula, interpretation):
-            return interpretation
+        if truth_value(formula, dict(interpretation)):
+            return dict(interpretation)
         else:
             return False
 
     atom = atoms.pop()
-    atoms1 = atoms
+    atoms1 = atoms.copy()
 
-    interpretationC = interpretation
-    interpretationC[str(atom)] = True
-    interpretation1 = interpretationC
+    interpretation1 = interpretation.copy()
+    interpretation1.append((str(atom), True))
 
-    interpretationD = interpretation
-    interpretationD[str(atom)] = False
-    interpretation2 = interpretationD
+    interpretation2 = interpretation.copy()
+    interpretation2.append((str(atom), False))
 
     # print(formula, atoms1, interpretation1)
     result = sat(formula, atoms1, interpretation1)
 
     if result != False:
-        return interpretation1
+        return dict(interpretation1)
 
     return sat(formula, atoms1, interpretation2)
 
+def get_interpretation(formula, interpretation, list_atoms, truth_value = True):
+    """ Save the truth value in interpretation and remove atoms from the Atoms """
+
+    if isinstance(formula, Atom): # verifica se a formula é uma atômica
+        interpretation.append((str(formula), truth_value))
+        remove_atoms(formula, list_atoms)
+    
+    if isinstance(formula, Not): # verifica se a formula é uma possui not
+        get_interpretation(formula.inner, interpretation, list_atoms, False)
+
+    if isinstance(formula, And): # verifica se a formula é um and
+        get_interpretation(formula.left, interpretation, list_atoms)
+        get_interpretation(formula.right, interpretation, list_atoms)
+    
+    return interpretation
+    
+def remove_atoms(atom, list_atoms):
+    """ Removes an Atom from list_atoms """
+    for index in list_atoms:
+        if index == atom:
+            list_atoms.remove(index)
+            break

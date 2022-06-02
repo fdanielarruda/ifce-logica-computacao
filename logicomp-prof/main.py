@@ -16,7 +16,7 @@ from semantics import *
 atomP = Atom('p')
 atomQ = Atom('q')
 
-formula = Or(atomP, atomQ)
+formula = Or(And((atomP), (atomQ)), (atomQ))
 # interpretation = {'p': False, 'q': False}
 
 print(satisfiability_brute_force(formula))
