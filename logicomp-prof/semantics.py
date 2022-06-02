@@ -1,7 +1,7 @@
 """The goal in this module is to define functions associated with the semantics of formulas in propositional logic. """
 
 
-from numpy import True_
+# from numpy import True_
 from formula import *
 from functions import atoms
 
@@ -56,13 +56,13 @@ def satisfiability_brute_force(formula):
     Otherwise, it returns False."""
 
     list_atoms = atoms(formula)
-    interpretation = {}
-    return sat(formula, list_atoms, interpretation)
+    interpretation = {'p': False, 'q': False}
+    return sat(formula, [], interpretation)
 
     # ======== YOUR CODE HERE ========
     
 def sat(formula, atoms, interpretation):
-    if len(atoms) >= 0:
+    if len(atoms) == 0:
         if truth_value(formula, interpretation):
             return interpretation
         else:
@@ -79,6 +79,7 @@ def sat(formula, atoms, interpretation):
     interpretationD[str(atom)] = False
     interpretation2 = interpretationD
 
+    # print(formula, atoms1, interpretation1)
     result = sat(formula, atoms1, interpretation1)
 
     if result != False:
