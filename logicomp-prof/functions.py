@@ -5,6 +5,7 @@ from formula import *
 
 def length(formula):
     """Determines the length of a formula in propositional logic."""
+    
     if isinstance(formula, Atom):
         return 1
     if isinstance(formula, Not):
@@ -141,16 +142,24 @@ def separate_pathologies(archive_data, cols_data, pathologies, no_pathologies):
     count_data = 0
 
     for data in archive_data:
+        data_new = [] 
+
+        for dado in data: # remove break line
+            data_new.append(dado.replace("\n", ""))
+        data = data_new
+        
         if(count_data == 0):
             for col in data:
                 if(len(cols_data) < len(data) - 1):
                     cols_data.append(col)
         else:
-            if(data[len(data) - 1] == 0):
+            if(int(data[len(data) - 1]) == 0):
                 no_pathologies.append(data)
-            elif(data[len(data) - 1] == 1):
+            if(int(data[len(data) - 1]) == 1):
                 pathologies.append(data)
         count_data += 1
+    
+    return [cols_data, pathologies, no_pathologies]
 
 def and_all(formula):
     count = 0
@@ -178,15 +187,15 @@ def or_all(formula):
 
     return orall
 
-dados = []
-dados.append(["PI <= 42.09", "LA <= 39.63", "GS <= 37.89", "P"])
-dados.append([0,1,1,1])
-dados.append([0,0,0,1])
-dados.append([1,1,1,0])
-dados.append([0,0,1,0])
+# dados = []
+# dados.append(["PI <= 42.09", "LA <= 39.63", "GS <= 37.89", "P"])
+# dados.append([0,1,1,1])
+# dados.append([0,0,0,1])
+# dados.append([1,1,1,0])
+# dados.append([0,0,1,0])
 
-cols_data = []
-pathologies = []
-no_pathologies = []
-separate_pathologies(dados, cols_data, pathologies, no_pathologies)
+# cols_data = []
+# pathologies = []
+# no_pathologies = []
+# separate_pathologies(dados, cols_data, pathologies, no_pathologies)
 # print(cols_data)
