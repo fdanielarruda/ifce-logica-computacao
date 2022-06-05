@@ -152,8 +152,31 @@ def separate_pathologies(archive_data, cols_data, pathologies, no_pathologies):
                 pathologies.append(data)
         count_data += 1
 
-def set_up_rules():
-    pass
+def and_all(formula):
+    count = 0
+
+    for form in formula:
+        if (count == 0):
+            andall = form
+        else:
+            andall = And(andall, form)
+
+        count += 1
+
+    return andall
+
+def or_all(formula):
+    count = 0
+
+    for form in formula:
+        if (count == 0):
+            orall = form
+        else:
+            orall = Or(orall, form)
+
+        count += 1
+
+    return orall
 
 dados = []
 dados.append(["PI <= 42.09", "LA <= 39.63", "GS <= 37.89", "P"])
