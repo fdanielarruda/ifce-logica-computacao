@@ -7,19 +7,31 @@ from semantics import *
 
 if(len(sys.argv) >= 3):
     dados = []
+    dados_copy = []
 
     if(int(sys.argv[2]) > 0):
         name_file = sys.argv[1]
-        quantity_rules = sys.argv[2]
+        m = sys.argv[2]
     else:
         print("Erro: Você deve fornecer pelo menos a quantidade de uma regra")
         sys.exit()
 
     try:
-        f = open(name_file, "r")
-        dados.append(f.read())
-        print(dados)
-        
+        with open(f"{name_file}", 'r') as fp:
+            for data in fp:
+                dados.append(data.split(','))
+
+        if(not dados):
+            print("Erro: Arquivo sem dados.")
+            sys.exit()
+        else:
+            count = 0
+
+        cols_data = []
+        pathologies = []
+        no_pathologies = []
+
+        [cols_data, pathologies, no_pathologies] = separate_pathologies(dados, [], [], [])
     except IOError:
         print("Erro: Arquivo não acessível")
     finally:
