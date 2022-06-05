@@ -1,9 +1,7 @@
 """The goal in this module is to define functions that take a formula as input and
 do some computation on its syntactic structure. """
 
-
 from formula import *
-
 
 def length(formula):
     """Determines the length of a formula in propositional logic."""
@@ -13,7 +11,6 @@ def length(formula):
         return length(formula.inner) + 1
     if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
         return length(formula.left) + length(formula.right) + 1
-
 
 def subformulas(formula):
     """Returns the set of all subformulas of a formula.
@@ -47,7 +44,13 @@ def atoms(formula):
         return atoms(formula.inner)
     if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
         return atoms(formula.left).union(atoms(formula.right))
-        
+
+def remove_atoms(atom, list_atoms):
+    """ Removes an Atom from list_atoms """
+    for index in list_atoms:
+        if index == atom:
+            list_atoms.remove(index)
+            break
 
 def number_of_atoms(formula):
     """Returns the number of atoms occurring in a formula."""
@@ -57,7 +60,6 @@ def number_of_atoms(formula):
         return number_of_atoms(formula.inner)
     if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
         return number_of_atoms(formula.left) + (number_of_atoms(formula.right))
-
 
 def number_of_connectives(formula):
     """Returns the number of connectives occurring in a formula."""
@@ -134,3 +136,34 @@ def is_decomposable_negation_normal_form(formula):
     """Returns True if formula is in decomposable negation normal form.
     Returns False, otherwise."""
     pass  # ======== REMOVE THIS LINE AND INSERT YOUR CODE HERE ========
+
+def separate_pathologies(archive_data, cols_data, pathologies, no_pathologies):
+    count_data = 0
+
+    for data in archive_data:
+        if(count_data == 0):
+            for col in data:
+                if(len(cols_data) < len(data) - 1):
+                    cols_data.append(col)
+        else:
+            if(data[len(data) - 1] == 0):
+                no_pathologies.append(data)
+            elif(data[len(data) - 1] == 1):
+                pathologies.append(data)
+        count_data += 1
+
+def set_up_rules():
+    pass
+
+dados = []
+dados.append(["PI <= 42.09", "LA <= 39.63", "GS <= 37.89", "P"])
+dados.append([0,1,1,1])
+dados.append([0,0,0,1])
+dados.append([1,1,1,0])
+dados.append([0,0,1,0])
+
+cols_data = []
+pathologies = []
+no_pathologies = []
+separate_pathologies(dados, cols_data, pathologies, no_pathologies)
+# print(cols_data)

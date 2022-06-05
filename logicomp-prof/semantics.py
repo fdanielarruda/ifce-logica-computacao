@@ -3,7 +3,7 @@
 
 # from numpy import True_
 from formula import *
-from functions import atoms
+from functions import *
 
 
 def truth_value(formula, interpretation):
@@ -100,10 +100,3 @@ def get_interpretation(formula, interpretation, list_atoms, truth_value = True):
         get_interpretation(formula.right, interpretation, list_atoms)
     
     return interpretation
-    
-def remove_atoms(atom, list_atoms):
-    """ Removes an Atom from list_atoms """
-    for index in list_atoms:
-        if index == atom:
-            list_atoms.remove(index)
-            break
