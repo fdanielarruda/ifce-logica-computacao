@@ -12,7 +12,7 @@ if(len(sys.argv) >= 3):
 
     if(int(sys.argv[2]) > 0):
         name_file = sys.argv[1]
-        m = sys.argv[2]
+        m = int(sys.argv[2])
     else:
         print("Erro: Você deve fornecer pelo menos a quantidade de uma regra")
         sys.exit()
@@ -28,11 +28,26 @@ if(len(sys.argv) >= 3):
         else:
             count = 0
 
-        cols_data = []
+        # EXECUTÁVEL DO PROJETO
+
+        attributes = []
         pathologies = []
         no_pathologies = []
 
-        [cols_data, pathologies, no_pathologies] = separate_pathologies(dados, [], [], [])
+        [attributes, pathologies, no_pathologies] = separate_pathologies(dados, [], [], [])
+        
+        condition_for_algorithm = and_all([
+            restriction_01(m, attributes),
+            restriction_02(m, attributes),
+            restriction_03(m, attributes, no_pathologies),
+            restriction_04(m, attributes, pathologies),
+            restriction_05(m, pathologies)
+        ])
+
+        solution_for_problem = satisfiability_brute_force(condition_for_algorithm)
+
+        print(solution_for_problem)
+
     except IOError:
         print("Erro: Arquivo não acessível")
     finally:
@@ -70,8 +85,8 @@ else:
 # dados.append([1,1,1,0])
 # dados.append([0,0,1,0])
 
-# cols_data = []
+# attributes = []
 # pathologies = []
 # no_pathologies = []
-# separate_pathologies(dados, cols_data, pathologies, no_pathologies)
-# print(cols_data)
+# separate_pathologies(dados, attributes, pathologies, no_pathologies)
+# print(attributes)

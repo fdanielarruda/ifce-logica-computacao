@@ -146,6 +146,7 @@ def separate_pathologies(archive_data, cols_data, pathologies, no_pathologies):
 
         for dado in data: # remove break line
             data_new.append(dado.replace("\n", ""))
+        
         data = data_new
         
         if(count_data == 0):
@@ -157,6 +158,7 @@ def separate_pathologies(archive_data, cols_data, pathologies, no_pathologies):
                 no_pathologies.append(data)
             if(int(data[len(data) - 1]) == 1):
                 pathologies.append(data)
+        
         count_data += 1
     
     return [cols_data, pathologies, no_pathologies]

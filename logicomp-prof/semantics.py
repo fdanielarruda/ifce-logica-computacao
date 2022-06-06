@@ -57,10 +57,11 @@ def satisfiability_brute_force(formula):
 
     list_atoms = atoms(formula)
     interpretation = get_interpretation(formula, [], list_atoms)
+
     return sat(formula, list_atoms, interpretation)
 
     # ======== YOUR CODE HERE ========
-    
+
 def sat(formula, atoms, interpretation):
     if len(atoms) == 0:
         if truth_value(formula, dict(interpretation)):
@@ -69,7 +70,7 @@ def sat(formula, atoms, interpretation):
             return False
 
     atom = atoms.pop()
-    atoms1 = atoms.copy()
+    atoms_copy = atoms.copy()
 
     interpretation1 = interpretation.copy()
     interpretation1.append((str(atom), True))
@@ -77,13 +78,12 @@ def sat(formula, atoms, interpretation):
     interpretation2 = interpretation.copy()
     interpretation2.append((str(atom), False))
 
-    # print(formula, atoms1, interpretation1)
-    result = sat(formula, atoms1, interpretation1)
+    result = sat(formula, atoms_copy, interpretation1)
 
     if result != False:
-        return dict(interpretation1)
+        return result
 
-    return sat(formula, atoms1, interpretation2)
+    return sat(formula, atoms_copy, interpretation2)
 
 def get_interpretation(formula, interpretation, list_atoms, truth_value = True):
     """ Save the truth value in interpretation and remove atoms from the Atoms """
