@@ -63,7 +63,6 @@ def satisfiability_brute_force(formula):
     # ======== YOUR CODE HERE ========
 
 def sat(formula, atoms, interpretation):
-    # print(interpretation)
     if len(atoms) == 0:
         if truth_value(formula, dict(interpretation)):
             return dict(interpretation)

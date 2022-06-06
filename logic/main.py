@@ -44,7 +44,6 @@ if(len(sys.argv) >= 3):
             restriction_05(m, pathologies)
         ])
 
-        # solution_for_problem = satisfiability_brute_force(condition_for_algorithm)
         solution_for_problem = satisfiability_brute_force(condition_for_algorithm)
 
         print(solution_for_problem)
