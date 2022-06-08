@@ -94,7 +94,7 @@ def restriction_04(m, attributes, pathologies):
             and_restriction_04 = []
 
             for count_a in range(0, len(attributes)):
-                c_not = Not(Atom("C" + str(count_m) + "," + str(count_p)))
+                c_not = Not(Atom("C " + str(count_m) + "," + str(count_p)))
                 if (int(pathologies[count_p - 1][len(attributes)]) == 1):
                     and_restriction_04.append(Implies(mounted_atom(attributes[count_a], count_m, "p"), c_not))
                 else:
@@ -114,7 +114,7 @@ def restriction_05(m, pathologies):
         or_restriction_05 = []
 
         for count_m in range(1, m + 1):
-            or_restriction_05.append(Atom("C" + str(count_m) + "," + str(count_p)))
+            or_restriction_05.append(Atom("C " + str(count_m) + "," + str(count_p)))
 
         and_restriction_05.append(or_all(or_restriction_05))
 
