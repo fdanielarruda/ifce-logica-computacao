@@ -189,15 +189,36 @@ def or_all(formula):
 
     return orall
 
-# dados = []
-# dados.append(["PI <= 42.09", "LA <= 39.63", "GS <= 37.89", "P"])
-# dados.append([0,1,1,1])
-# dados.append([0,0,0,1])
-# dados.append([1,1,1,0])
-# dados.append([0,0,1,0])
+def rules(solution_for_problem):
+    rules = {}
+    solution_split = ""
+    # print(solution_for_problem)
+    
+    for solution in solution_for_problem:
+        l = list(solution)
+        position_1 = l[1]
+        l[1] = ","
+        solution_copy = "".join(l)
+        print(solution_copy)
+        # print(solution_split) solution_split[0] = C1 || X PI <= 42.09, solution_split[1] = '1', solution_split[2] = 'n || s || p'
+        solution_split = solution_copy.split(",")
 
-# cols_data = []
-# pathologies = []
-# no_pathologies = []
-# separate_pathologies(dados, cols_data, pathologies, no_pathologies)
-# print(cols_data)
+        if(solution_for_problem[solution]):
+            if(solution_split[0] != "C"):
+                if(solution_split[2] not in rules):
+                    rules[solution_split[2]] = []
+                if(solution_split[3] == 'n'):
+                    part_split = solution_split[1].split(" ")
+                    rules[solution_split[2]].append(part_split[1] + " > " + part_split[3])
+                elif(solution_split[3] == 'p'):
+                    rules[solution_split[2]].append(solution_split[1])
+                    
+    all_rules = []
+    for rule in rules:
+        r = list(rules[rule])
+        all_rules.append("P => ")
+        for r_rules in r:
+            all_rules.append(r_rules+" ")
+            all_rules = [''.join(all_rules)]
+
+    # print(all_rules)

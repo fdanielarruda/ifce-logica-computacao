@@ -36,6 +36,8 @@ if(len(sys.argv) >= 3):
 
         [attributes, pathologies, no_pathologies] = separate_pathologies(dados, [], [], [])
         
+        print("aguarde...")
+
         condition_for_algorithm = and_all([
             restriction_01(m, attributes),
             restriction_02(m, attributes),
@@ -45,8 +47,9 @@ if(len(sys.argv) >= 3):
         ])
 
         solution_for_problem = satisfiability_brute_force(condition_for_algorithm)
-
-        print(solution_for_problem)
+        # print(solution_for_problem)
+        # print(solution_for_problem)
+        rules(solution_for_problem)
 
     except IOError:
         print("Erro: Arquivo não acessível")
