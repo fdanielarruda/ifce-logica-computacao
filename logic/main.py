@@ -47,8 +47,7 @@ if(len(sys.argv) >= 3):
         ])
 
         solution_for_problem = satisfiability_brute_force(condition_for_algorithm)
-        # print(solution_for_problem)
-        # print(solution_for_problem)
+        
         rules(solution_for_problem)
 
     except IOError:

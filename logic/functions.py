@@ -192,15 +192,11 @@ def or_all(formula):
 def rules(solution_for_problem):
     rules = {}
     solution_split = ""
-    # print(solution_for_problem)
     
     for solution in solution_for_problem:
         l = list(solution)
-        position_1 = l[1]
         l[1] = ","
         solution_copy = "".join(l)
-        print(solution_copy)
-        # print(solution_split) solution_split[0] = C1 || X PI <= 42.09, solution_split[1] = '1', solution_split[2] = 'n || s || p'
         solution_split = solution_copy.split(",")
 
         if(solution_for_problem[solution]):
@@ -209,16 +205,24 @@ def rules(solution_for_problem):
                     rules[solution_split[2]] = []
                 if(solution_split[3] == 'n'):
                     part_split = solution_split[1].split(" ")
-                    rules[solution_split[2]].append(part_split[1] + " > " + part_split[3])
+                    rules[solution_split[2]].append(part_split[0] + " > " + part_split[2])
                 elif(solution_split[3] == 'p'):
                     rules[solution_split[2]].append(solution_split[1])
-                    
-    all_rules = []
-    for rule in rules:
-        r = list(rules[rule])
-        all_rules.append("P => ")
-        for r_rules in r:
-            all_rules.append(r_rules+" ")
-            all_rules = [''.join(all_rules)]
 
-    # print(all_rules)
+    all_rules = "{"
+
+    for i, rule in enumerate(rules, start = 0):
+        if(i != 0):
+            all_rules += ", "
+        all_rules += "["
+
+        for index, r in enumerate(rules[rule], start = 0):
+            if(index != 0):
+                all_rules += ", "
+            all_rules += r
+
+        all_rules += "] => P"
+
+    all_rules += "}"
+
+    print(all_rules)
