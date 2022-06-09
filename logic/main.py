@@ -58,38 +58,3 @@ if(len(sys.argv) >= 3):
 else:
     print("Erro: Você deve fornecer os seguinte comando: python main.py nome_arquivo.csv quantidade_regras")
     sys.exit()
-
-# 
-
-# Aqui ficará o executável do projeto
-
-# atomP = Atom('p')
-# atomQ = Atom('q')
-
-# formula = (Not(atomP))
-# interpretation = {'p': False, 'q': False}
-
-# print(truth_value(formula, interpretation))
-
-# atomP = Atom('p')
-# atomQ = Atom('q')
-
-# formula = Or(And((atomP), (atomQ)), (atomQ))
-# # interpretation = {'p': False, 'q': False}
-
-# print(satisfiability_brute_force(formula))
-
-# 
-
-# dados = []
-# dados.append(["PI <= 42.09", "LA <= 39.63", "GS <= 37.89", "P"])
-# dados.append([0,1,1,1])
-# dados.append([0,0,0,1])
-# dados.append([1,1,1,0])
-# dados.append([0,0,1,0])
-
-# attributes = []
-# pathologies = []
-# no_pathologies = []
-# separate_pathologies(dados, attributes, pathologies, no_pathologies)
-# print(attributes)
