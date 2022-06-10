@@ -25,11 +25,8 @@ if(len(sys.argv) >= 3):
         if(not dados):
             print("Erro: Arquivo sem dados.")
             sys.exit()
-        else:
-            count = 0
 
         # EXECUTÁVEL DO PROJETO
-
         attributes = []
         pathologies = []
         no_pathologies = []

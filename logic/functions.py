@@ -46,13 +46,6 @@ def atoms(formula):
     if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
         return atoms(formula.left).union(atoms(formula.right))
 
-def remove_atoms(atom, list_atoms):
-    """ Removes an Atom from list_atoms """
-    for index in list_atoms:
-        if index == atom:
-            list_atoms.remove(index)
-            break
-
 def number_of_atoms(formula):
     """Returns the number of atoms occurring in a formula."""
     if isinstance(formula, Atom):
@@ -70,28 +63,6 @@ def number_of_connectives(formula):
         return number_of_connectives(formula.inner) + 1
     if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
         return number_of_connectives(formula.left) + number_of_connectives(formula.right) + 1
-
-
-def number_of_connectives(formula):
-    """Returns the number of connectives occurring in a formula."""
-    pass  # ======== REMOVE THIS LINE AND INSERT YOUR CODE HERE ========
-
-
-def is_literal(formula):
-    """Returns True if formula is a literal. It returns False, otherwise"""
-    pass  # ======== REMOVE THIS LINE AND INSERT YOUR CODE HERE ========
-
-
-def substitution(formula, old_subformula, new_subformula):
-    """Returns a new formula obtained by replacing all occurrences
-    of old_subformula in the input formula by new_subformula."""
-    pass  # ======== REMOVE THIS LINE AND INSERT YOUR CODE HERE ========
-
-
-def is_clause(formula):
-    """Returns True if formula is a clause. It returns False, otherwise"""
-    pass  # ======== REMOVE THIS LINE AND INSERT YOUR CODE HERE ========
-
 
 def is_negation_normal_form(formula):
     """Returns True if formula is in negation normal form.
@@ -115,30 +86,7 @@ def is_negation_normal_form(formula):
             else:
                 return False
 
-
-def is_cnf(formula):
-    """Returns True if formula is in conjunctive normal form.
-    Returns False, otherwise."""
-    pass  # ======== REMOVE THIS LINE AND INSERT YOUR CODE HERE ========
-
-
-def is_term(formula):
-    """Returns True if formula is a term. It returns False, otherwise"""
-    pass  # ======== REMOVE THIS LINE AND INSERT YOUR CODE HERE ========
-
-
-def is_dnf(formula):
-    """Returns True if formula is in disjunctive normal form.
-    Returns False, otherwise."""
-    pass  # ======== REMOVE THIS LINE AND INSERT YOUR CODE HERE ========
-
-
-def is_decomposable_negation_normal_form(formula):
-    """Returns True if formula is in decomposable negation normal form.
-    Returns False, otherwise."""
-    pass  # ======== REMOVE THIS LINE AND INSERT YOUR CODE HERE ========
-
-def separate_pathologies(archive_data, cols_data, pathologies, no_pathologies):
+def separate_pathologies(archive_data, attributes, pathologies, no_pathologies):
     count_data = 0
 
     for data in archive_data:
@@ -151,8 +99,8 @@ def separate_pathologies(archive_data, cols_data, pathologies, no_pathologies):
         
         if(count_data == 0):
             for col in data:
-                if(len(cols_data) < len(data) - 1):
-                    cols_data.append(col)
+                if(len(attributes) < len(data) - 1):
+                    attributes.append(col)
         else:
             if(int(data[len(data) - 1]) == 0):
                 no_pathologies.append(data)
@@ -161,7 +109,7 @@ def separate_pathologies(archive_data, cols_data, pathologies, no_pathologies):
         
         count_data += 1
     
-    return [cols_data, pathologies, no_pathologies]
+    return [attributes, pathologies, no_pathologies]
 
 def and_all(formula):
     count = 0
