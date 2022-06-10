@@ -5,3 +5,7 @@ Professor: THIAGO ALVES ROCHA
 Alunos:
 20201045050589 - ANTONIO EDUARDO DE ANDRADE SOUSA
 20201045050279 - FRANCISCO DANIEL VASCONCELOS DE ARRUDA
+
+Como usar o sistema:
+cd logic/
+python main.py ../pacientes/column_bin_<nº atributos>a_<nº pacientes>p.csv <nº de regras>
