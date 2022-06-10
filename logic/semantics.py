@@ -12,7 +12,6 @@ def satisfiability_brute_force(formula):
 
     atomics = atoms(formula)
     valoration = []
-    # interpretation = get_interpretation(formula, atomics, valoration)
 
     return sat(formula, atomics, valoration)
 
@@ -45,7 +44,7 @@ def truth_value(formula, interpretation):
     An interpretation may be defined as dictionary. For example, {'p': True, 'q': False}.
     """
     
-    if isinstance(formula, Atom): # determina se a formula é um átomo e se for retorna a interpretation
+    if isinstance(formula, Atom): # se for uma atômica retorna o valor que existe na interpretation
         atomsInterpretation = interpretation.keys()
         for atomI in atomsInterpretation:
             if str(atomI) == str(formula):
@@ -54,11 +53,11 @@ def truth_value(formula, interpretation):
     if isinstance(formula, Not): # determina se a formula é uma negação e se for, retorna F
         return not truth_value(formula.inner, interpretation)
 
-    if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
+    if isinstance(formula, Implies): # se for um implica retorna verdadeiro, a menos que sejam V e F, respectivamente
+        return not ( truth_value(formula.left, interpretation) and not truth_value(formula.right, interpretation) )
 
-        if isinstance(formula, Implies):
-            return not ( truth_value(formula.left, interpretation) and not truth_value(formula.right, interpretation) )
-        if isinstance(formula, And): # retorna o resultado da valoração do
-            return truth_value(formula.left, interpretation) and truth_value(formula.right, interpretation)
-        if isinstance(formula, Or): # retorna o resultado da valoração do or
-            return truth_value(formula.left, interpretation) or truth_value(formula.right, interpretation)
+    if isinstance(formula, And): # se for and retorna verdadeiro caso ambos sejam V
+        return truth_value(formula.left, interpretation) and truth_value(formula.right, interpretation)
+
+    if isinstance(formula, Or): # se for or retorna verdadeira se um ou outro for v
+        return truth_value(formula.left, interpretation) or truth_value(formula.right, interpretation)

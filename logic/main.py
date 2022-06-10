@@ -42,7 +42,7 @@ if(len(sys.argv) >= 3):
             restriction_04(m, attributes, pathologies),
             restriction_05(m, pathologies)
         ])
-
+        
         solution_for_problem = satisfiability_brute_force(condition_for_algorithm)
         
         rules(solution_for_problem)
