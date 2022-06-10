@@ -55,10 +55,21 @@ def satisfiability_brute_force(formula):
     In other words, if the input formula is satisfiable, it returns an interpretation that assigns true to the formula.
     Otherwise, it returns False."""
 
-    list_atoms = atoms(formula)
-    interpretation = get_interpretation(formula, [], list_atoms)
-    
-    return sat(formula, list_atoms, interpretation)
+    atomics = atoms(formula)
+    valoration = []
+    # interpretation = get_interpretation(formula, atomics, valoration)
+
+    return sat(formula, atomics, valoration)
+
+def satisfiability_brute_force_old(formula):
+    """Checks whether formula is satisfiable.
+    In other words, if the input formula is satisfiable, it returns an interpretation that assigns true to the formula.
+    Otherwise, it returns False."""
+
+    atomics = atoms(formula)
+    valoration = []
+
+    return sat(formula, atomics, valoration)
 
     # ======== YOUR CODE HERE ========
 
@@ -70,7 +81,7 @@ def sat(formula, atoms, interpretation):
             return False
 
     atom = atoms.pop()
-    atoms_copy = atoms.copy()
+    atoms_copy_1 = atoms.copy()
     atoms_copy_2 = atoms.copy()
 
     interpretation1 = interpretation.copy()
@@ -79,25 +90,9 @@ def sat(formula, atoms, interpretation):
     interpretation2 = interpretation.copy()
     interpretation2.append((str(atom), False))
 
-    result = sat(formula, atoms_copy_2, interpretation1)
+    result = sat(formula, atoms_copy_1, interpretation1)
 
     if result != False:
         return result
 
-    return sat(formula, atoms_copy, interpretation2)
-
-def get_interpretation(formula, interpretation, list_atoms, truth_value = True):
-    """ Save the truth value in interpretation and remove atoms from the Atoms """
-
-    if isinstance(formula, Atom): # verifica se a formula é uma atômica
-        interpretation.append((str(formula), truth_value))
-        remove_atoms(formula, list_atoms)
-    
-    if isinstance(formula, Not): # verifica se a formula é uma possui not
-        get_interpretation(formula.inner, interpretation, list_atoms, False)
-
-    if isinstance(formula, And): # verifica se a formula é um and
-        get_interpretation(formula.left, interpretation, list_atoms)
-        get_interpretation(formula.right, interpretation, list_atoms)
-    
-    return interpretation
+    return sat(formula, atoms_copy_2, interpretation2)
