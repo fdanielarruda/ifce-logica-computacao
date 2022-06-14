@@ -9,6 +9,7 @@ from restrictions import *
 if(len(sys.argv) >= 3):
     dados = []
     dados_copy = []
+    # 
 
     if(int(sys.argv[2]) > 0):
         name_file = sys.argv[1]
