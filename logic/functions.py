@@ -171,11 +171,16 @@ def rules(solution_for_problem):
     all_rules = "{"
 
     for i, rule in enumerate(rules, start = 0):
+        # print(i) # 0
+        # print(rule) # '1'
+
         if(i != 0):
             all_rules += ", "
         all_rules += "["
 
         for index, r in enumerate(rules[rule], start = 0):
+            # print(index)  # 0
+            # print(r)      # PI > 70.62
             if(index != 0):
                 all_rules += ", "
             all_rules += r

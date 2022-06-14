@@ -16,6 +16,7 @@ def satisfiability_brute_force(formula):
     return sat(formula, atomics, valoration)
 
 def sat(formula, atoms, interpretation):
+    
     if len(atoms) == 0:
         if truth_value(formula, dict(interpretation)):
             return dict(interpretation)
@@ -43,10 +44,24 @@ def truth_value(formula, interpretation):
     """Determines the truth value of a formula in an interpretation.
     An interpretation may be defined as dictionary. For example, {'p': True, 'q': False}.
     """
+    # print(formula)
+    # (C 1,1 ∧ C 1,2)
+    # C 1,1
+    # C 1,2
+
+    # print(interpretation)
+    # {'X PI <= 42.09,1,p': False, 'X GS <= 57.55,1,n': False, 'X GS <= 57.55,1,s': True, 'C 1,2': True, 'X PI <= 70.62,1,n': True, 'X GS <= 57.55,1,p': False, 'C 1,1': True, 'X PI <= 70.62,1,s': False, 'X PI <= 70.62,1,p': False, 'X PI <= 42.09,1,n': True, 'X PI <= 42.09,1,s': False}
     
     if isinstance(formula, Atom): # se for uma atômica retorna o valor que existe na interpretation
+
+        # print(interpretation.keys()) # dict_keys(['X PI <= 70.62,1,s', 'X PI <= 42.09,1,p', 'X PI <= 42.09,1,s', 'X PI <= 70.62,1,n', 'C 1,1', 'X GS <= 57.55,1,p', 'C 1,2', 'X GS <= 57.55,1,n', 'X PI <= 70.62,1,p', 'X GS <= 57.55,1,s', 'X PI <= 42.09,1,n'])
+
         atomsInterpretation = interpretation.keys()
         for atomI in atomsInterpretation:
+
+            # print(atomI) # X PI <= 70.62,1,s
+            #             # C 1,2
+
             if str(atomI) == str(formula):
                 return interpretation[str(atomI)]
 
