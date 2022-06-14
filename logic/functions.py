@@ -88,6 +88,12 @@ def is_negation_normal_form(formula):
 
 def separate_pathologies(archive_data, attributes, pathologies, no_pathologies):
     count_data = 0
+    # print(archive_data) 
+    # [
+    #  ['PI <= 42.09', 'PI <= 70.62', 'GS <= 57.55', 'P\n'],
+    #  ['0', '0', '1', '1\n'], ['0', '0', '0', '1\n'],
+    #  ['0', '1', '0', '0']
+    # ]
 
     for data in archive_data:
         data_new = [] 
@@ -142,6 +148,8 @@ def rules(solution_for_problem):
     solution_split = ""
     
     for solution in solution_for_problem:
+        # solution => "C 1,1 => ["C", "1", "1"] , [X GS <= 57.55,1,p]"
+
         l = list(solution)
         l[1] = ","
         solution_copy = "".join(l)
@@ -156,6 +164,9 @@ def rules(solution_for_problem):
                     rules[solution_split[2]].append(part_split[0] + " > " + part_split[2])
                 elif(solution_split[3] == 'p'):
                     rules[solution_split[2]].append(solution_split[1])
+    
+    # print(rules) 
+    # rules {'1': ['PI > 42.09', 'PI > 70.62']}
 
     all_rules = "{"
 
@@ -173,4 +184,4 @@ def rules(solution_for_problem):
 
     all_rules += "}"
 
-    print(all_rules)
+    print(all_rules) # {[PI > 42.09, PI > 70.62] => P}
