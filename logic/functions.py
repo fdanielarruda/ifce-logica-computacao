@@ -71,20 +71,19 @@ def is_negation_normal_form(formula):
     """ Preciso verificar se a negação só é aplicada apenas nas atómicas e os únicos outros operadores booleanos permitidos são a conjunção ( E ) e disjunção ( OU )."""
             
     if isinstance(formula, Atom):
-        return True
+        return formula
+
     if isinstance(formula, Not):
         if isinstance(formula.inner, Atom):
-            return True
+            return formula
         else:
-            return False
-    if isinstance(formula, Implies) or isinstance(formula, And) or isinstance(formula, Or):
-        if isinstance(formula, Implies):
-            return False
-        else:
-            if is_negation_normal_form(formula.left) == True and is_negation_normal_form(formula.right) == True:
-                return True
-            else:
-                return False
+            is_negation_normal_form(formula)
+    
+    if isinstance(formula, Or):
+        return (Or(is_negation_normal_form(formula.left), is_negation_normal_form(formula.right)))
+
+    if isinstance(formula, And):
+        return (And(is_negation_normal_form(formula.left), is_negation_normal_form(formula.right)))
 
 def separate_pathologies(archive_data, attributes, pathologies, no_pathologies):
     count_data = 0
@@ -174,3 +173,120 @@ def rules(solution_for_problem):
     all_rules += "}"
 
     print(all_rules)
+
+# LISTA 02
+def to_cnf(formulas):
+    result = free_operations(formulas)
+    result = is_negation_normal_form(result) # Já havia no repositório
+    result = distributive(result)
+    print(result)
+
+    return result
+
+def free_operations(formula):
+    # a
+    if isinstance(formula, Atom):
+        return formula
+
+    # ~a
+    elif isinstance(formula, Not):
+        return (Not(free_operations(formula.inner)))
+
+    # a ^ b 
+    elif isinstance(formula, And):
+        return (And(free_operations(formula.left), free_operations(formula.right)))
+
+    # a V b 
+    elif isinstance(formula, Or):
+        return (Or(free_operations(formula.left), free_operations(formula.right)))
+
+    # ~a V b
+    elif isinstance(formula, Implies):
+        return (Or(Not(free_operations(formula.left)), free_operations(formula.right)))
+
+def distributive(formula):
+    if isinstance(formula, Atom):
+        return formula
+
+    if isinstance(formula, And):
+        return And(distributive(formula.left), distributive(formula.right))
+
+    if isinstance(formula, Or):
+        b1 = distributive(formula.left)
+        b2 = distributive(formula.right)
+
+        if isinstance(b1, And):
+            return And(distributive(Or(b1.left, b2)), distributive(Or(b1.right, b2)))
+
+        if isinstance(b2, And):
+            return And(distributive(Or(b1, b2.left)), distributive(Or(b1, b2.right)))
+
+        return Or(b1, b2)
+
+    return formula
+
+def solution_cnf(formulas):
+    atomics = {}
+    atomics_list = atoms(formulas)
+    count = 1
+
+    # CRIANDO UM ARRAY COM AS ATOMICAS DA FÓRMULA
+    for atomic in atomics_list:
+        atomics[str(atomic)] = count
+        count += 1
+
+    # CONVERTER FÓRMULA
+    cnf_list = clause_for_solution_sat(formulas)
+
+    # CONVERTER ATOMICAS PARA NÚMEROS
+    cnf_list = atomic_to_number(cnf_list, atomics)
+    
+    return cnf_list
+
+def clause_for_solution_sat(formula):
+    result = []
+
+    if isinstance(formula, And):
+        recursive_clauses_of_list(formula, result)
+    else:
+        result.append(formula)
+
+    return result
+
+def recursive_clauses_of_list(formula, result):
+    if isinstance(formula.left, And):
+        recursive_clauses_of_list(formula.left, result)
+    else:
+        result.append([formula.left])
+
+    if isinstance(formula.right, And):
+        recursive_clauses_of_list(formula.right, result)
+    else:
+        result.append([formula.right])
+
+def atomic_to_number(list, atomics):
+    result = []
+
+    for clause in list:
+        result.append(run_clauses(clause, atomics))
+
+    return result
+
+def run_clauses(clause, atomics):
+    result = []
+
+    for item in clause:
+        recursive_clauses_join(item, atomics, result)
+    
+    return result
+
+def recursive_clauses_join(formula, atomics, result): 
+    if isinstance(formula, Atom):
+        result.append(atomics[str(formula)])
+
+    elif isinstance(formula, Not):
+        result.append(atomics[str(formula.inner)] * -1)
+    
+    elif isinstance(formula, Or):
+        recursive_clauses_join(formula.left, atomics, result)
+        recursive_clauses_join(formula.right, atomics, result)

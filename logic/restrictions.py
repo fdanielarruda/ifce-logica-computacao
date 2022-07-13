@@ -14,25 +14,31 @@ def restriction_01(m, attributes):
         # (p^~n^~s) V (~p^n^~s) V (~p^~n^s) === (((p^~n)^~s) V ((~p^n)^~s)) V ((~p^~n)^s)
         for atribute in attributes:
             and_restriction_01.append(
-                and_all([
-                    or_all([
-                        mounted_atom(atribute, count_m, "p"),
-                        mounted_atom(atribute, count_m, "n"),
+                Or(
+                    Or(
+                        And(
+                            And(
+                                mounted_atom(atribute, count_m, "p"),
+                                Not(mounted_atom(atribute, count_m, "n"))
+                            ),
+                            Not(mounted_atom(atribute, count_m, "s"))
+                        ),
+                        And(
+                            And(
+                                Not(mounted_atom(atribute, count_m, "p")),
+                                mounted_atom(atribute, count_m, "n")
+                            ),
+                            Not(mounted_atom(atribute, count_m, "s"))
+                        )
+                    ),
+                    And(
+                        And(
+                            Not(mounted_atom(atribute, count_m, "p")),
+                            Not(mounted_atom(atribute, count_m, "n"))
+                        ),
                         mounted_atom(atribute, count_m, "s")
-                    ]),
-                    Or(
-                        Not(mounted_atom(atribute, count_m, "p")),
-                        Not(mounted_atom(atribute, count_m, "n"))
-                    ),
-                    Or(
-                        Not(mounted_atom(atribute, count_m, "p")),
-                        Not(mounted_atom(atribute, count_m, "s"))
-                    ),
-                    Or(
-                        Not(mounted_atom(atribute, count_m, "n")),
-                        Not(mounted_atom(atribute, count_m, "s"))
                     )
-                ])
+                )
             )
         
         # A ("azão") com todas as colunas da regra
@@ -91,9 +97,9 @@ def restriction_04(m, attributes, pathologies):
                 c_not = Not(Atom("C " + str(count_m) + "," + str(count_p)))
 
                 if (int(pathologies[count_p - 1][count_a]) == 0):
-                    and_restriction_04.append(Or(Not(mounted_atom(attributes[count_a], count_m, "p")), c_not))
+                    and_restriction_04.append(Implies(mounted_atom(attributes[count_a], count_m, "p"), c_not))
                 else:
-                    and_restriction_04.append(Or(Not(mounted_atom(attributes[count_a], count_m, "n")), c_not))
+                    and_restriction_04.append(Implies(mounted_atom(attributes[count_a], count_m, "n"), c_not))
      
             formula.append(and_all(and_restriction_04))
 
