@@ -43,14 +43,18 @@ if(len(sys.argv) >= 3):
             restriction_05(m, pathologies)
         ])
         
-        print("CONDIÇÕES DO ALGORITMO: ")
-        print(restriction_01(m, attributes))
-        
+        # print("CONDIÇÕES DO ALGORITMO: ")
+        # print(restriction_01(m, attributes))
+        # print("")
+
         solution_for_problem = satisfiability_brute_force(condition_for_algorithm)
 
-        print("")
-        print("RESULTADO DAS REGARAS: ")
-        rules(solution_for_problem)
+        print("SOLUÇÕES PARA O PROBLEMA: ")
+        
+        if (solution_for_problem):
+            rules(solution_for_problem)
+        else:
+            print("Nenhuma possível")
 
     except IOError:
         print("Erro: Arquivo não acessível")
