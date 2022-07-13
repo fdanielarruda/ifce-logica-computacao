@@ -5,6 +5,7 @@ from formula import *
 from functions import *
 from semantics import *
 from restrictions import *
+from pysat.solvers import Glucose3
 
 if(len(sys.argv) >= 3):
     dados = []
@@ -44,8 +45,20 @@ if(len(sys.argv) >= 3):
         ])
 
         solution_for_problem_cnf = solution_cnf(condition_for_algorithm)
-        print(solution_for_problem_cnf)
         
+        print("Possíveis Soluções")
+        print(solution_for_problem_cnf)
+
+        print("")
+        print("Usandono PySAT")
+        
+        g = Glucose3()
+
+        for solution in solution_for_problem_cnf:
+            g.add_clause(solution)
+
+        g.solve()
+        print(g.get_model())
     except IOError:
         print("Erro: Arquivo não acessível")
     finally:
