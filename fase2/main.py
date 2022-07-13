@@ -96,3 +96,6 @@ g.add_clause([6])
 
 print(g.solve())
 print(g.get_model())
+
+# cd ../fase2
+# python main.py
