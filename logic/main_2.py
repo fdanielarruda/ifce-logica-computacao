@@ -43,21 +43,9 @@ if(len(sys.argv) >= 3):
             to_cnf(restriction_05(m, pathologies))
         ])
 
-        # print(to_cnf(restriction_01(m, attributes)))
-        
-        # print("CONDIÇÕES DO ALGORITMO: ")
-        # print(restriction_01(m, attributes))
-        # print("")
-        
         solution_for_problem_cnf = solution_cnf(condition_for_algorithm)
         print(solution_for_problem_cnf)
-        # print("SOLUÇÕES PARA O PROBLEMA: ")
         
-        # if (solution_for_problem_cnf):
-        #     rules(solution_for_problem_cnf)
-        # else:
-        #     print("Nenhuma possível")
-
     except IOError:
         print("Erro: Arquivo não acessível")
     finally:

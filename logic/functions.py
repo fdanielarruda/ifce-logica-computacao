@@ -176,33 +176,32 @@ def rules(solution_for_problem):
 
 # LISTA 02
 def to_cnf(formulas):
-    result = free_operations(formulas)
+    result = remove_implies(formulas)
     result = is_negation_normal_form(result) # Já havia no repositório
     result = distributive(result)
-    print(result)
 
     return result
 
-def free_operations(formula):
+def remove_implies(formula):
     # a
     if isinstance(formula, Atom):
         return formula
 
     # ~a
     elif isinstance(formula, Not):
-        return (Not(free_operations(formula.inner)))
+        return (Not(remove_implies(formula.inner)))
 
     # a ^ b 
     elif isinstance(formula, And):
-        return (And(free_operations(formula.left), free_operations(formula.right)))
+        return (And(remove_implies(formula.left), remove_implies(formula.right)))
 
     # a V b 
     elif isinstance(formula, Or):
-        return (Or(free_operations(formula.left), free_operations(formula.right)))
+        return (Or(remove_implies(formula.left), remove_implies(formula.right)))
 
     # ~a V b
     elif isinstance(formula, Implies):
-        return (Or(Not(free_operations(formula.left)), free_operations(formula.right)))
+        return (Or(Not(remove_implies(formula.left)), remove_implies(formula.right)))
 
 def distributive(formula):
     if isinstance(formula, Atom):
@@ -236,16 +235,17 @@ def solution_cnf(formulas):
         count += 1
 
     # CONVERTER FÓRMULA
-    cnf_list = clause_for_solution_sat(formulas)
+    cnf_list = clause_for_solutions(formulas)
 
     # CONVERTER ATOMICAS PARA NÚMEROS
     cnf_list = atomic_to_number(cnf_list, atomics)
     
     return cnf_list
 
-def clause_for_solution_sat(formula):
+def clause_for_solutions(formula):
     result = []
 
+    # [1, 2] [3, 4] = (X1 v X2) ^ (X1 V X2) 
     if isinstance(formula, And):
         recursive_clauses_of_list(formula, result)
     else:
