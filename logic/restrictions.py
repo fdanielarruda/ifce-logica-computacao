@@ -12,6 +12,7 @@ def restriction_01(m, attributes):
         and_restriction_01 = []
 
         # (p^~n^~s) V (~p^n^~s) V (~p^~n^s) === (((p^~n)^~s) V ((~p^n)^~s)) V ((~p^~n)^s)
+        # (p V n V s) ^ (-p V -n) ...
         for atribute in attributes:
             and_restriction_01.append(
                 Or(

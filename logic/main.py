@@ -49,7 +49,7 @@ if(len(sys.argv) >= 3):
         solution_for_problem = satisfiability_brute_force(condition_for_algorithm)
 
         print("")
-        print("RESULTADO DAS REGARAS: ")
+        print("RESULTADO DAS REGRAS: ")
         rules(solution_for_problem)
 
     except IOError:

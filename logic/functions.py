@@ -240,7 +240,7 @@ def solution_cnf(formulas):
     # CONVERTER ATOMICAS PARA NÚMEROS
     cnf_list = atomic_to_number(cnf_list, atomics)
     
-    return cnf_list
+    return [cnf_list, atomics_list]
 
 def clause_for_solutions(formula):
     result = []
@@ -290,3 +290,17 @@ def recursive_clauses_join(formula, atomics, result):
     elif isinstance(formula, Or):
         recursive_clauses_join(formula.left, atomics, result)
         recursive_clauses_join(formula.right, atomics, result)
+
+def number_to_atomics(numbers, atomics):
+    index = 0
+    rules = {}
+
+    for atomic in atomics:
+        if numbers[index] > 0:
+            rules[str(atomic)] = True
+        else:
+            rules[str(atomic)] = False
+        
+        index += 1
+
+    return rules

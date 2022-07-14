@@ -44,13 +44,13 @@ if(len(sys.argv) >= 3):
             to_cnf(restriction_05(m, pathologies))
         ])
 
-        solution_for_problem_cnf = solution_cnf(condition_for_algorithm)
+        [solution_for_problem_cnf, atomics] = solution_cnf(condition_for_algorithm)
         
-        print("Possíveis Soluções")
-        print(solution_for_problem_cnf)
+        # print("Possíveis Soluções")
+        # print(solution_for_problem_cnf)
 
-        print("")
-        print("Usandono PySAT")
+        # print("")
+        # print("Usando o PySAT")
         
         g = Glucose3()
 
@@ -58,7 +58,14 @@ if(len(sys.argv) >= 3):
             g.add_clause(solution)
 
         g.solve()
-        print(g.get_model())
+        results = g.get_model()
+
+        if results:
+            atomics_result = number_to_atomics(results, atomics)
+            rules(atomics_result)
+        else:
+            print("Nenhum resultado encontrado")
+        
     except IOError:
         print("Erro: Arquivo não acessível")
     finally:
